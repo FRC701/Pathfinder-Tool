@@ -7,8 +7,20 @@ import jaci.pathfinder.modifiers.TankModifier;
 
 public class Tank {
 
+    public static final double SAMPLE_INTERVAL_SECONDS = 0.05;
+    public static final double MAX_VELOCITY = 1.7;    // units must be consistant feet/second?
+    public static final double MAX_ACCELERATION = 2.0; // units must be consistent feet/second/second?
+    public static final double MAX_JERK = 60.0;       // units must be consistent acceleration/second
+
     public static void main(String[] args) {
-        Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC, Trajectory.Config.SAMPLES_HIGH, 0.05, 1.7, 2.0, 60.0);
+        Trajectory.Config config
+          = new Trajectory.Config(
+              Trajectory.FitMethod.HERMITE_QUINTIC, // HERMITE_CUBIC
+              Trajectory.Config.SAMPLES_HIGH,
+              SAMPLE_INTERVAL_SECONDS,
+              MAX_VELOCITY,
+              MAX_ACCELERATION,
+              MAX_JERK);
 
         // Waypoints are x, y, heading (in radians) where x is the direction in front of the robot
         Waypoint[] points = new Waypoint[] {
