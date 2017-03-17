@@ -1,4 +1,6 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
@@ -44,7 +46,48 @@ public class Tank {
         out = new File("right.csv");
         Pathfinder.writeToCSV(out, right);
 
+        out = new File("trajectory.cpp");
+        WriteToStruct(out, left, right);
         System.out.println("Done!");
     }
 
+    public static void WriteToStruct(File out, Trajectory leftTrajectory, Trajectory rightTrajectory)
+    {
+      WriteToStruct(out, leftTrajectory.segments, rightTrajectory.segments);
+    }
+
+    public static void WriteToStruct(File file, Trajectory.Segment[] leftSegments, Trajectory.Segment[] rightSegments)
+    {
+      // todo: check leftSegments.length == rightSegments.length
+      try {
+        PrintWriter out = new PrintWriter(file);
+
+        out.printf("static const unsigned int kTrajectoryLength = %d\n\n", leftSegments.length);
+        out.println("const ChassisMotionProfileCommand::TrajectoryPoint leftTrajectories[] = {");
+        PrintSegments(out, leftSegments);
+
+        out.println("const ChassisMotionProfileCommand::TrajectoryPoint rightTrajectories[] = {");
+        PrintSegments(out, rightSegments);
+
+        out.flush();
+        out.close();
+      } catch(FileNotFoundException ex) {
+        System.err.println("Bummer! An exception.");
+      }
+    }
+
+    public static void PrintSegments(PrintWriter out, Trajectory.Segment[] segments) {
+      out.println("  // { position, velocity },");
+      boolean first = true;
+      for (int index = 0; index < segments.length; index++) {
+        if (! first ) {
+          out.println(",");
+        } else {
+          first = false;
+        }
+        out.printf("  { %g, %g }",
+          segments[index].position, segments[index].velocity);
+      }
+      out.println("\n};");
+    }
 }
