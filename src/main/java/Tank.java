@@ -7,6 +7,8 @@ import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 import jaci.pathfinder.modifiers.TankModifier;
 
+// todo: Separate robot characteristics and path characteristics
+
 public class Tank {
 
     // Settings for Mjolnir
@@ -18,7 +20,7 @@ public class Tank {
     public static final double INCHES_PER_FOOT = 12;
     public static final double SECONDS_PER_MINUTE = 60;
     public static final double SAMPLE_INTERVAL_SECONDS = 0.01;
-    public static final double ROBOT_MAX_VELOCITY_FPS = 13.5;
+    public static final double ROBOT_MAX_VELOCITY_FPS = 10.52;
     public static final double MAX_VELOCITY_FPS = ROBOT_MAX_VELOCITY_FPS * 0.75;     // units must be consistant feet/second?
     public static final double MAX_ACCELERATION_FPSPS = MAX_VELOCITY_FPS * 1.0; // units must be consistent feet/second/second?
     public static final double MAX_JERK_FPSPSPS = 60.0;        // units must be consistent acceleration/second
@@ -73,11 +75,15 @@ public class Tank {
 
     public static final double WHEEL_DIAMETER_INCHES = 4.0;
     public static final double WHEEL_DIAMETER_FEET = WHEEL_DIAMETER_INCHES / INCHES_PER_FOOT;  // 1/3
-    public static final double FEET_PER_ROTATION = 1.0 / (WHEEL_DIAMETER_FEET * Math.PI);  // 0.9549
-    public static final double FPS_TO_RPM = FEET_PER_ROTATION * SECONDS_PER_MINUTE;  // 57.9
+    public static final double FEET_PER_ROTATION_WHEEL = 1.0 / (WHEEL_DIAMETER_FEET * Math.PI);  // 0.9549
+    public static final double WHEEL_GEAR_TEETH = 36.0;
+    public static final double ENCODER_GEAR_TEETH = 26.0;
+    public static final double FEET_PER_ROTATION = FEET_PER_ROTATION_WHEEL * WHEEL_GEAR_TEETH / ENCODER_GEAR_TEETH; // 1.3222
+    public static final double FPS_TO_RPM = FEET_PER_ROTATION * SECONDS_PER_MINUTE;  // 79.3326
 
     public static void WriteToStruct(File out, Trajectory leftTrajectory, Trajectory rightTrajectory)
     {
+      // todo: what are the units for the position?
       WriteToStruct(out, leftTrajectory.segments, rightTrajectory.segments, FEET_PER_ROTATION, FPS_TO_RPM);
     }
 
