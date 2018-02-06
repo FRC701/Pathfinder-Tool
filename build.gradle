@@ -1,5 +1,5 @@
 apply plugin: 'java'
 
 dependencies {
-  compile files("../Pathfinder/Pathfinder-Java/build/classes/main")
+  compile files("../Pathfinder/Pathfinder-Java/build/libs/Pathfinder-Java-1.8.jar")
 }
