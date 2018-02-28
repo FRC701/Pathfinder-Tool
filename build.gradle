@@ -1,5 +1,16 @@
 apply plugin: 'java'
 
+task fatJar(type: Jar) {
+  manifest {
+    attributes 'Implementation-Title':'Pathfinder-Tool',
+      'Implementation-Version': '1.0',
+      'Main-Class':'Tank'
+  }
+  baseName = project.name + '-all'
+  from {configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}}
+  with jar
+}
+
 dependencies {
   compile files("../Pathfinder/Pathfinder-Java/build/libs/Pathfinder-Java-1.8.jar")
 }
