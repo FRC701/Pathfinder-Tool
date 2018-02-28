@@ -24,7 +24,9 @@ public class Tank {
     public static final double MAX_VELOCITY_FPS = ROBOT_MAX_VELOCITY_FPS * 0.75; // 7.89 units must be consistant feet/second
     public static final double MAX_ACCELERATION_FPSPS = MAX_VELOCITY_FPS * 2.0; // 7.89 units must be consistent feet/second/second?
     public static final double MAX_JERK_FPSPSPS = 60.0;        // units must be consistent acceleration/second
-    public static final String NAMESPACE = "AutoRunTrajectories";
+//    public static final String NAMESPACE = "AutoRunTrajectories";
+//    public static final String NAMESPACE = "RightSwitchTrajectories";
+    public static final String NAMESPACE = "LeftSwitchTrajectories";
 
 
     public static void main(String[] args) {
@@ -45,13 +47,34 @@ public class Tank {
         // Put the robot half way across the line.
         final double AUTO_RUN_DISTANCE_FEET = AUTO_LINE_DISTANCE_FEET - (ROBOT_LENGTH_FEET / 2.0);
 
-        Waypoint[] gearPoints = new Waypoint[] {
+        Waypoint[] autoRunPoints = new Waypoint[] {
                 new Waypoint(0, 0, 0),
                 new Waypoint(AUTO_RUN_DISTANCE_FEET, 0, 0)
         };
 
+        final double CENTER_LINE_FEET = 13.5;
+        final double ROBOT_WIDTH_FEET = (27.75 + (BUMPER_THICKNESS_INCHES * 2)) / INCHES_PER_FOOT;
+        final double CENTER_START_FEET = CENTER_LINE_FEET - (ROBOT_WIDTH_FEET / 2);
+
+        final double SWITCH_DISTANCE_FEET = 140.0 / INCHES_PER_FOOT;
+        final double SWITCH_DRIVE_DISTANCE_FEET = SWITCH_DISTANCE_FEET - ROBOT_LENGTH_FEET;
+
+        final double RIGHT_SWITCH_FEET = 9;
+        final double LEFT_SWITCH_FEET = 18;
+
+        Waypoint[] rightSwitchPoints = new Waypoint[] {
+                new Waypoint(0, CENTER_START_FEET, 0),
+                new Waypoint(SWITCH_DRIVE_DISTANCE_FEET, RIGHT_SWITCH_FEET, 0)
+        };
+
+        Waypoint[] leftSwitchPoints = new Waypoint[] {
+                new Waypoint(0, CENTER_START_FEET, 0),
+                new Waypoint(SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET, 0)
+        };
+
+
         // Waypoint[] points = rightGearPoints;
-        Waypoint[] points = gearPoints;
+        Waypoint[] points = leftSwitchPoints;
         Trajectory trajectory = Pathfinder.generate(points, config);
 
         final double WHEEL_BASE_INCHES = 27.5;
@@ -76,11 +99,11 @@ public class Tank {
     public static final double UNITS_PER_REVOLUTION = 4096.0;
     public static final double WHEEL_DIAMETER_INCHES = 4.0;
     public static final double WHEEL_DIAMETER_FEET = WHEEL_DIAMETER_INCHES / INCHES_PER_FOOT;  // 1/3
-    public static final double FEET_PER_ROTATION_WHEEL = 1.0 / (WHEEL_DIAMETER_FEET * Math.PI);  // 0.9549
+    public static final double FEET_PER_ROTATION_WHEEL =  Math.PI * WHEEL_DIAMETER_FEET;  // 1.04719
     public static final double WHEEL_GEAR_TEETH = 36.0;
     public static final double ENCODER_GEAR_TEETH = 26.0;
-    public static final double FEET_PER_ROTATION_ENCODER = FEET_PER_ROTATION_WHEEL * WHEEL_GEAR_TEETH / ENCODER_GEAR_TEETH; // 1.3222
-    public static final double FPS_TO_RPM = FEET_PER_ROTATION_ENCODER * SECONDS_PER_MINUTE;  // 79.3326
+    public static final double FEET_PER_ROTATION_ENCODER = FEET_PER_ROTATION_WHEEL * ENCODER_GEAR_TEETH / WHEEL_GEAR_TEETH; // 1.4500
+    public static final double FPS_TO_RPM = FEET_PER_ROTATION_ENCODER * SECONDS_PER_MINUTE;  // 87.00
 
     /*
        ticks      rotation
@@ -93,12 +116,11 @@ public class Tank {
 
     */
 
-
-    public static final double TICKS_PER_FOOT = UNITS_PER_REVOLUTION / FEET_PER_ROTATION_ENCODER; // 3098.335
-    public static final double FPS_TO_UNITS_PER_100MS = TICKS_PER_FOOT / 10.0;  // 10.0 is 100ms / sec == 309.833
+    public static final double TICKS_PER_FOOT = UNITS_PER_REVOLUTION / FEET_PER_ROTATION_ENCODER; // 2824.8941
+    public static final double FPS_TO_UNITS_PER_100MS = TICKS_PER_FOOT / 10.0;  // 10.0 is 100ms / sec == 282.4894
 
     /*
-     *  The velocity values are about 10x too small.
+     *  The velocity values are about 2x too small.
      */
 
 
@@ -118,7 +140,7 @@ public class Tank {
       try {
         PrintWriter out = new PrintWriter(file);
 
-        out.printf("#include \"MotionProfile.h\"\n");
+        out.printf("#include \"Commands/MotionProfile.h\"\n");
         out.printf("namespace %s\n{\n\n", NAMESPACE);
 
         // Default linkage is extern for non-const and static for const.
