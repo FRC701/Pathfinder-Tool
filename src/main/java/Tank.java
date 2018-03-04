@@ -57,23 +57,26 @@ public class Tank {
         final double CENTER_START_FEET = CENTER_LINE_FEET - (ROBOT_WIDTH_FEET / 2);
 
         final double SWITCH_DISTANCE_FEET = 140.0 / INCHES_PER_FOOT;
-        final double SWITCH_DRIVE_DISTANCE_FEET = SWITCH_DISTANCE_FEET - ROBOT_LENGTH_FEET;
+        final double RIGHT_SWITCH_DISTANCE_FUDGE_FEET = 2.0;
+        final double LEFT_SWITCH_DISTANCE_FUDGE_FEET = 3.0;
+        final double RIGHT_SWITCH_DRIVE_DISTANCE_FEET = SWITCH_DISTANCE_FEET - ROBOT_LENGTH_FEET - RIGHT_SWITCH_DISTANCE_FUDGE_FEET;
+        final double LEFT_SWITCH_DRIVE_DISTANCE_FEET = SWITCH_DISTANCE_FEET - ROBOT_LENGTH_FEET - LEFT_SWITCH_DISTANCE_FUDGE_FEET;
 
-        final double RIGHT_SWITCH_FEET = 9;
+        final double RIGHT_SWITCH_FEET = 9 - 1.5;
         final double LEFT_SWITCH_FEET = 18;
 
         Waypoint[] rightSwitchPoints = new Waypoint[] {
                 new Waypoint(0, CENTER_START_FEET, 0),
-                new Waypoint(SWITCH_DRIVE_DISTANCE_FEET, RIGHT_SWITCH_FEET, 0)
+                new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET, RIGHT_SWITCH_FEET, 0)
         };
 
         Waypoint[] leftSwitchPoints = new Waypoint[] {
                 new Waypoint(0, CENTER_START_FEET, 0),
-                new Waypoint(SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET, 0)
+                new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET, 0)
         };
 
 
-        // Waypoint[] points = rightGearPoints;
+        // Waypoint[] points = rightSwitchPoints;
         Waypoint[] points = leftSwitchPoints;
         Trajectory trajectory = Pathfinder.generate(points, config);
 
