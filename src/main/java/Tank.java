@@ -29,11 +29,12 @@ public class Tank {
 //    public static final String NAMESPACE = "LeftSwitchTrajectories";
 //    public static final String NAMESPACE = "PostLeftSwitchTrajectories";
 //    public static final String NAMESPACE = "PostRightSwitchTrajectories";
-    public static final String NAMESPACE = "LeftSwitchReverseTrajectories";
+//    public static final String NAMESPACE = "LeftSwitchReverseTrajectories";
 //    public static final String NAMESPACE = "RightSwitchReverseTrajectories";
 //    public static final String NAMESPACE = "SwitchIntakeTrajectories";
 //    public static final String NAMESPACE = "SwitchIntakeReverseTrajectories";
-
+//    public static final String NAMESPACE = "PostRightSwitchTrajectories";
+    public static final String NAMESPACE = "LeftScaleTrajectories";
 
 
     public static void main(String[] args) {
@@ -59,6 +60,8 @@ public class Tank {
                 new Waypoint(AUTO_RUN_DISTANCE_FEET, 0, 0)
         };
 
+
+
         final double CENTER_LINE_FEET = 13.5;
         final double ROBOT_WIDTH_FEET = (27.75 + (BUMPER_THICKNESS_INCHES * 2)) / INCHES_PER_FOOT;
         final double CENTER_START_FEET = CENTER_LINE_FEET - (ROBOT_WIDTH_FEET / 2);
@@ -71,6 +74,10 @@ public class Tank {
         final double CUBE_PILE_DRIVE_DISTANCE_FEET = (98 / INCHES_PER_FOOT) - ROBOT_LENGTH_FEET - (10 / INCHES_PER_FOOT);
         final double RIGHT_SWITCH_FEET = 9 - 1.5;
         final double LEFT_SWITCH_FEET = 18;
+
+        final double LEFT_START_FEET = (30 / INCHES_PER_FOOT) - (ROBOT_WIDTH_FEET / 2);
+        final double LEFT_SCALE_DISTANCE_FUDGE_FEET = 3.5;
+        final double LEFT_SCALE_DRIVE_DISTANCE_FEET = (300 / INCHES_PER_FOOT) - LEFT_SCALE_DISTANCE_FUDGE_FEET;
 
         Waypoint[] rightSwitchPoints = new Waypoint[] {
                 new Waypoint(0, CENTER_START_FEET, 0),
@@ -98,6 +105,7 @@ public class Tank {
           new Waypoint(0, CENTER_START_FEET, 0),
           new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET /*+ 2.0*/, 0),
           new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET + 13.3, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET + 1.0 , -Math.PI/6.0)
+
         };
 
         Waypoint[] leftSwitchReverse = new Waypoint[] {
@@ -119,8 +127,8 @@ public class Tank {
         // Waypoint[] points = leftSwitchPoints;
         // Waypoint[] points = postSwitchLeft;
         //Waypoint[] points = postSwitchRight;
-        //Waypoint[] points = leftScalePoints;
-        Waypoint[] points = leftSwitchReverse;
+        Waypoint[] points = leftScalePoints;
+        // Waypoint[] points = leftSwitchReverse;
         //Waypoint[] points = rightSwitchReverse;
         //Waypoint[] points = switchIntake;
         Trajectory trajectory = Pathfinder.generate(points, config);
