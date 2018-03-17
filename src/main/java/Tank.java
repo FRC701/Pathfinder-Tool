@@ -27,8 +27,8 @@ public class Tank {
 //    public static final String NAMESPACE = "AutoRunTrajectories";
 //    public static final String NAMESPACE = "RightSwitchTrajectories";
 //    public static final String NAMESPACE = "LeftSwitchTrajectories";
-    public static final String NAMESPACE = "PostLeftSwitchTrajectories";
-//    public static final String NAMESPACE = "PostRightSwitchTrajectories";
+//    public static final String NAMESPACE = "PostLeftSwitchTrajectories";
+    public static final String NAMESPACE = "PostRightSwitchTrajectories";
 
 
     public static void main(String[] args) {
@@ -85,14 +85,21 @@ public class Tank {
 
         Waypoint[] postSwitchRight = new Waypoint[] {
           new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET - 5.0, RIGHT_SWITCH_FEET, 0 ),
-          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET, RIGHT_SWITCH_FEET - 1.0 - ROBOT_WIDTH_FEET - 2.25, 0),
-          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET + 7.0, RIGHT_SWITCH_FEET - 1.0 - ROBOT_WIDTH_FEET - 2.25, 0)
+          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET, RIGHT_SWITCH_FEET - 1.0 - ROBOT_WIDTH_FEET - 2.0, 0),
+          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET + 7.0, RIGHT_SWITCH_FEET - 1.0 - ROBOT_WIDTH_FEET - 2.0, 0)
+        };
+
+        Waypoint[] leftScalePoints = new Waypoint[] {
+          new Waypoint(0, CENTER_START_FEET, 0),
+          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET /*+ 2.0*/, 0),
+          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET + 13.3, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET + 1.0 , -Math.PI/6.0)
         };
 
         // Waypoint[] points = rightSwitchPoints;
         // Waypoint[] points = leftSwitchPoints;
-         Waypoint[] points = postSwitchLeft;
+        // Waypoint[] points = postSwitchLeft;
         //Waypoint[] points = postSwitchRight;
+        Waypoint[] points = leftScalePoints;
         Trajectory trajectory = Pathfinder.generate(points, config);
 
         final double WHEEL_BASE_INCHES = 27.5;
