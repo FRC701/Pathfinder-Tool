@@ -101,13 +101,6 @@ public class Tank {
           new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET + 7.0, RIGHT_SWITCH_FEET - 1.0 - ROBOT_WIDTH_FEET - 2.0, 0)
         };
 
-        Waypoint[] leftScalePoints = new Waypoint[] {
-          new Waypoint(0, CENTER_START_FEET, 0),
-          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET /*+ 2.0*/, 0),
-          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET + 13.3, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET + 1.0 , -Math.PI/6.0)
-
-        };
-
         Waypoint[] leftSwitchReverse = new Waypoint[] {
           new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET - 0.5, LEFT_SWITCH_FEET, 0),
           new Waypoint(0, CENTER_START_FEET, 0)
@@ -121,6 +114,16 @@ public class Tank {
         Waypoint[] switchIntake = new Waypoint[] {
           new Waypoint(0, CENTER_START_FEET, 0),
           new Waypoint(CUBE_PILE_DRIVE_DISTANCE_FEET, CENTER_START_FEET, 0)
+        };
+
+
+        final double LEFT_SCALE_START_FEET = 27.0 - 2.5 - (ROBOT_WIDTH_FEET / 2.0);
+
+        Waypoint[] leftScalePoints = new Waypoint[] {
+          new Waypoint(0, LEFT_SCALE_START_FEET , 0),
+          new Waypoint((288.0 / INCHES_PER_FOOT) + 1.0 /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
+                        LEFT_SCALE_START_FEET + 1.25, -Math.PI/9.0)
+
         };
 
         // Waypoint[] points = rightSwitchPoints;
@@ -229,8 +232,8 @@ public class Tank {
           first = false;
         }
         out.printf("  { %g, %g }",
-          segments[index].position * positionScale * -1.0,
-          segments[index].velocity * velocityScale * -1.0);
+          segments[index].position * positionScale /* * -1.0 */,
+          segments[index].velocity * velocityScale /* * -1.0 */);
       }
       out.println("\n};");
     }
