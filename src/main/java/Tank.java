@@ -28,7 +28,12 @@ public class Tank {
 //    public static final String NAMESPACE = "RightSwitchTrajectories";
 //    public static final String NAMESPACE = "LeftSwitchTrajectories";
 //    public static final String NAMESPACE = "PostLeftSwitchTrajectories";
-    public static final String NAMESPACE = "PostRightSwitchTrajectories";
+//    public static final String NAMESPACE = "PostRightSwitchTrajectories";
+    public static final String NAMESPACE = "LeftSwitchReverseTrajectories";
+//    public static final String NAMESPACE = "RightSwitchReverseTrajectories";
+//    public static final String NAMESPACE = "SwitchIntakeTrajectories";
+//    public static final String NAMESPACE = "SwitchIntakeReverseTrajectories";
+
 
 
     public static void main(String[] args) {
@@ -63,7 +68,7 @@ public class Tank {
         final double LEFT_SWITCH_DISTANCE_FUDGE_FEET = 3.0;
         final double RIGHT_SWITCH_DRIVE_DISTANCE_FEET = SWITCH_DISTANCE_FEET - ROBOT_LENGTH_FEET - RIGHT_SWITCH_DISTANCE_FUDGE_FEET;
         final double LEFT_SWITCH_DRIVE_DISTANCE_FEET = SWITCH_DISTANCE_FEET - ROBOT_LENGTH_FEET - LEFT_SWITCH_DISTANCE_FUDGE_FEET;
-
+        final double CUBE_PILE_DRIVE_DISTANCE_FEET = (98 / INCHES_PER_FOOT) - ROBOT_LENGTH_FEET - (10 / INCHES_PER_FOOT);
         final double RIGHT_SWITCH_FEET = 9 - 1.5;
         final double LEFT_SWITCH_FEET = 18;
 
@@ -95,11 +100,29 @@ public class Tank {
           new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET + 13.3, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET + 1.0 , -Math.PI/6.0)
         };
 
+        Waypoint[] leftSwitchReverse = new Waypoint[] {
+          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET - 0.5, LEFT_SWITCH_FEET, 0),
+          new Waypoint(0, CENTER_START_FEET, 0)
+        };
+
+        Waypoint[] rightSwitchReverse = new Waypoint[] {
+          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET - 0.5, RIGHT_SWITCH_FEET, 0),
+          new Waypoint(0, CENTER_START_FEET, 0)
+        };
+
+        Waypoint[] switchIntake = new Waypoint[] {
+          new Waypoint(0, CENTER_START_FEET, 0),
+          new Waypoint(CUBE_PILE_DRIVE_DISTANCE_FEET, CENTER_START_FEET, 0)
+        };
+
         // Waypoint[] points = rightSwitchPoints;
         // Waypoint[] points = leftSwitchPoints;
         // Waypoint[] points = postSwitchLeft;
         //Waypoint[] points = postSwitchRight;
-        Waypoint[] points = leftScalePoints;
+        //Waypoint[] points = leftScalePoints;
+        Waypoint[] points = leftSwitchReverse;
+        //Waypoint[] points = rightSwitchReverse;
+        //Waypoint[] points = switchIntake;
         Trajectory trajectory = Pathfinder.generate(points, config);
 
         final double WHEEL_BASE_INCHES = 27.5;
@@ -198,8 +221,8 @@ public class Tank {
           first = false;
         }
         out.printf("  { %g, %g }",
-          segments[index].position * positionScale,
-          segments[index].velocity * velocityScale);
+          segments[index].position * positionScale * -1.0,
+          segments[index].velocity * velocityScale * -1.0);
       }
       out.println("\n};");
     }
