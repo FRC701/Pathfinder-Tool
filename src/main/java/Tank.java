@@ -121,8 +121,8 @@ public class Tank {
 
         Waypoint[] leftScalePoints = new Waypoint[] {
           new Waypoint(0, LEFT_SCALE_START_FEET , 0),
-          new Waypoint((288.0 / INCHES_PER_FOOT) + 1.0 /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
-                        LEFT_SCALE_START_FEET + 1.25, -Math.PI/9.0)
+          new Waypoint((288.0 / INCHES_PER_FOOT) + 2.0 /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
+                          LEFT_SCALE_START_FEET + 1.25, -Math.PI/9.0)
 
         };
 
