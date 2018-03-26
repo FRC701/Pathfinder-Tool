@@ -35,6 +35,7 @@ public class Tank {
 //    public static final String NAMESPACE = "SwitchIntakeReverseTrajectories";
 //    public static final String NAMESPACE = "PostRightSwitchTrajectories";
     public static final String NAMESPACE = "LeftScaleTrajectories";
+//    public static final String NAMESPACE = "RightScaleTrajectories";
 
 
     public static void main(String[] args) {
@@ -57,7 +58,7 @@ public class Tank {
 
         Waypoint[] autoRunPoints = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(AUTO_RUN_DISTANCE_FEET, 0, 0)
+                new Waypoint(AUTO_RUN_DISTANCE_FEET + 7.0, 0, 0)
         };
 
 
@@ -121,19 +122,29 @@ public class Tank {
 
         Waypoint[] leftScalePoints = new Waypoint[] {
           new Waypoint(0, LEFT_SCALE_START_FEET , 0),
-          new Waypoint((288.0 / INCHES_PER_FOOT) + 2.0 /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
+          new Waypoint((288.0 / INCHES_PER_FOOT)  /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
                           LEFT_SCALE_START_FEET + 1.25, -Math.PI/9.0)
 
         };
 
+        final double RIGHT_SCALE_START_FEET = 2.5 + (ROBOT_WIDTH_FEET / 2.0);
+
+        Waypoint[] rightScalePoints = new Waypoint[] {
+          new Waypoint(0, RIGHT_SCALE_START_FEET , 0),
+          new Waypoint((288.0 / INCHES_PER_FOOT) /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
+                          RIGHT_SCALE_START_FEET - 1.25, Math.PI/9.0)
+
+        };
         // Waypoint[] points = rightSwitchPoints;
         // Waypoint[] points = leftSwitchPoints;
         // Waypoint[] points = postSwitchLeft;
         //Waypoint[] points = postSwitchRight;
-        Waypoint[] points = leftScalePoints;
+         Waypoint[] points = leftScalePoints;
+        //Waypoint[] points = rightScalePoints;
         // Waypoint[] points = leftSwitchReverse;
         //Waypoint[] points = rightSwitchReverse;
         //Waypoint[] points = switchIntake;
+        //Waypoint[] points = autoRunPoints;
         Trajectory trajectory = Pathfinder.generate(points, config);
 
         final double WHEEL_BASE_INCHES = 27.5;
