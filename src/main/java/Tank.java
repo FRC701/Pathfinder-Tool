@@ -145,6 +145,8 @@ public class Tank {
         //Waypoint[] points = rightSwitchReverse;
         //Waypoint[] points = switchIntake;
         //Waypoint[] points = autoRunPoints;
+
+        PrintWaypoints(points);
         Trajectory trajectory = Pathfinder.generate(points, config);
 
         final double WHEEL_BASE_INCHES = 27.5;
@@ -248,4 +250,12 @@ public class Tank {
       }
       out.println("\n};");
     }
+
+  public static void PrintWaypoints(final Waypoint[] points)
+  {
+    for (Waypoint point:points)
+    {
+      System.out.printf("%g,%g,%g\n", point.x, point.y, point.angle);
+    }
+  }
 }
