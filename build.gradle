@@ -12,5 +12,5 @@ task fatJar(type: Jar) {
 }
 
 dependencies {
-  compile files("../Pathfinder/Pathfinder-Java/build/libs/Pathfinder-Java-1.8.jar")
+  compile files("src/main/resources/Pathfinder-Java-2019.2.19.jar", "src/main/resources/JNILoader-1.0.1.jar")
 }
