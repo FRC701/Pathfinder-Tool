@@ -34,7 +34,7 @@ public class Tank {
 //    public static final String NAMESPACE = "SwitchIntakeTrajectories";
 //    public static final String NAMESPACE = "SwitchIntakeReverseTrajectories";
 //    public static final String NAMESPACE = "PostRightSwitchTrajectories";
-    public static final String NAMESPACE = "LeftScaleTrajectories";
+//    public static final String NAMESPACE = "LeftScaleTrajectories";
 //    public static final String NAMESPACE = "RightScaleTrajectories";
 
 
@@ -135,16 +135,16 @@ public class Tank {
                           RIGHT_SCALE_START_FEET - 1.25, Math.PI/9.0)
 
         };
-        // Waypoint[] points = rightSwitchPoints;
+        Waypoint[] points = rightSwitchPoints;
         // Waypoint[] points = leftSwitchPoints;
         // Waypoint[] points = postSwitchLeft;
         //Waypoint[] points = postSwitchRight;
-         Waypoint[] points = leftScalePoints;
+        // Waypoint[] points = leftScalePoints;
         //Waypoint[] points = rightScalePoints;
         // Waypoint[] points = leftSwitchReverse;
         //Waypoint[] points = rightSwitchReverse;
         //Waypoint[] points = switchIntake;
-        //Waypoint[] points = autoRunPoints;
+        // Waypoint[] points = autoRunPoints;
 
         PrintWaypoints(points);
         Trajectory trajectory = Pathfinder.generate(points, config);
@@ -163,8 +163,12 @@ public class Tank {
         out = new File("./right.csv");
         Pathfinder.writeToCSV(out, right);
 
-        out = new File("trajectory.cpp");
-        WriteToStruct(out, left, right);
+        out = new File("trajectory.csv");
+      try {        
+        WriteToCSV(out, left, right);
+      } catch (Exception ex) {
+        System.err.println("Rats! An exception.");
+      }
         System.out.println("Done!");
     }
 
@@ -196,34 +200,25 @@ public class Tank {
      */
 
 
-    public static void WriteToStruct(File out, Trajectory leftTrajectory, Trajectory rightTrajectory)
+    public static void WriteToCSV(File out, Trajectory leftTrajectory, Trajectory rightTrajectory) throws Exception
     {
       // todo: what are the units for the position?
-      WriteToStruct(out, leftTrajectory.segments, rightTrajectory.segments, TICKS_PER_FOOT, FPS_TO_UNITS_PER_100MS);
+      WriteToCSV(out, leftTrajectory.segments, rightTrajectory.segments, TICKS_PER_FOOT, FPS_TO_UNITS_PER_100MS);
     }
 
-    public static void WriteToStruct(File file,
+    public static void WriteToCSV(File file,
                                      Trajectory.Segment[] leftSegments,
                                      Trajectory.Segment[] rightSegments,
                                      double positionScale,
-                                     double velocityScale)
+                                     double velocityScale) throws Exception
     {
       // todo: check leftSegments.length == rightSegments.length
       try {
         PrintWriter out = new PrintWriter(file);
 
-        out.printf("#include \"Commands/MotionProfile.h\"\n");
-        out.printf("namespace %s\n{\n\n", NAMESPACE);
-
-        // Default linkage is extern for non-const and static for const.
-        // Change the linkage for const by specifing extern.
-        out.printf("extern const unsigned int kTrajectoryLength = %d;\n\n", leftSegments.length);
-        out.println("extern const robovikes::TrajectoryPoint leftTrajectories[] = {");
-        PrintSegments(out, leftSegments, positionScale, velocityScale );
-
-        out.println("extern const robovikes::TrajectoryPoint rightTrajectories[] = {");
-        PrintSegments(out, rightSegments, positionScale, velocityScale);
-        out.printf("\n} // namespace %s\n", NAMESPACE);
+		// Print the csv header
+		out.println("left_position,left_velocity,right_position,right_velocity");
+		PrintSegments(out, leftSegments, rightSegments, positionScale, velocityScale);
 
         out.flush();
         out.close();
@@ -233,22 +228,22 @@ public class Tank {
     }
 
     public static void PrintSegments(PrintWriter out,
-                                     Trajectory.Segment[] segments,
+                                     Trajectory.Segment[] leftSegments,
+                                     Trajectory.Segment[] rightSegments,
                                      double positionScale,
-                                     double velocityScale) {
-      out.println("  // { position (R), velocity (RPM) },");
-      boolean first = true;
-      for (int index = 0; index < segments.length; index++) {
-        if (! first ) {
-          out.println(",");
-        } else {
-          first = false;
-        }
-        out.printf("  { %g, %g }",
-          segments[index].position * positionScale /* * -1.0 */,
-          segments[index].velocity * velocityScale /* * -1.0 */);
+                                     double velocityScale) throws Exception
+	{
+	  if (leftSegments.length != rightSegments.length) {
+	  	throw new Exception("Segments must be the same length");
+	  }
+
+      for (int index = 0; index < leftSegments.length; index++) {
+        out.printf("%g,%g,%g,%g\n",
+          leftSegments[index].position * positionScale /* * -1.0 */,
+          leftSegments[index].velocity * velocityScale /* * -1.0 */,
+          rightSegments[index].position * positionScale /* * -1.0 */,
+          rightSegments[index].velocity * velocityScale /* * -1.0 */);
       }
-      out.println("\n};");
     }
 
   public static void PrintWaypoints(final Waypoint[] points)
