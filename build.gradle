@@ -1,5 +1,12 @@
 apply plugin: 'java'
 
+repositories {
+    mavenCentral()
+    maven {
+        url "https://imjac.in/dev/maven"
+    }
+}
+
 task fatJar(type: Jar) {
   manifest {
     attributes 'Implementation-Title':'Pathfinder-Tool',
@@ -12,5 +19,6 @@ task fatJar(type: Jar) {
 }
 
 dependencies {
-  compile files("src/main/resources/Pathfinder-Java-2019.2.19.jar", "src/main/resources/JNILoader-1.0.1.jar")
+  compile 'jaci.pathfinder:Pathfinder-Java:2019.2.19'
+  compile 'jaci.jniloader:JNILoader:1.0.1'
 }
