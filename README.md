@@ -4,35 +4,39 @@ The Pathfinder Tool can generate Tank Drive trajectories with using the Pathfind
 
 Right now, this is very cobbled together.
 
-1. Pathfinder must be in a parallel directory and built ahead of time.
-2. build using `./gradlew fatJar`
-3. run using
-   `java -Djava.library.path=../Pathfinder/Pathfinder-Java/build/libs/pathfinderjava/shared/any64/ -jar build/libs/Pathfinder-Tool-all.jar`
+1. build using `./gradlew fatJar`
+2. run using
+   `java -jar build/libs/Pathfinder-Tool-all.jar` 
+   
+   See the `pathfinder-tool` script.
 
    for Windows
-   `java -Djava.library.path=..\Pathfinder\Pathfinder-Java\build\libs\pathfinderjava\shared\any64\ -jar build\libs\Pathfinder-Tool-all.jar `
+   `java -jar build\libs\Pathfinder-Tool-all.jar`
+   
+   Need a script for Windows.
 
-You will need to change the java.library.path variable to match your platform.
+The newest versions of Java seem to be able to load JNI libraries from a single jar file. 
+The resulting jar file appears to run completely on it's own with no external paths.
+
+The libraries that are checked in with this project were extracted from libraries at
+
+```
+https://imjac.in/dev/maven/jaci/
+https://imjac.in/dev/maven/jaci/pathfinder/Pathfinder-JNI/2019.2.19/Pathfinder-JNI-2019.2.19-osxx86-64.jar
+https://imjac.in/dev/maven/jaci/pathfinder/Pathfinder-CoreJNI/2019.2.19/Pathfinder-CoreJNI-2019.2.19-osxx86.jar
+https://imjac.in/dev/maven/jaci/jniloader/JNILoader/1.0.1/JNILoader-1.0.1.jar
+https://imjac.in/dev/maven/jaci/pathfinder/Pathfinder-Java/2019.2.19/Pathfinder-Java-2019.2.19.jar
+```
+There are POM files available here, but I don't know how to integrate with Gradle.
+
 
 # To Do
 
-* Rewrite the tool in C++. A standalone tool should be possible in C++ using the Pathfinder static library. As it stands now, the Java tool requires a native library which means the tool cannot be standalone.
+* Rewrite the tool in C++. A standalone tool should be possible in C++ using the Pathfinder static library. 
+  As it stands now, the Java tool requires a native library which means the tool cannot be standalone.
 
 # Dependencies
 
-The Pathfinder project must be in a parallel directory and must also be built. Building Pathfinder takes several steps. As of this writing the steps are:
+The dependencies can be downloaded from the links above. The latest java files are included with this project.
 
-1. Install Visual Studio Community 2017 
-2. From the Visual Studio Installer install
-  * Desktop development with C++
-  * Windows 10 SDK (10.0.14393.0) [This SDK is shown in the summary section on the right.]
-3. Install the Java JDK
-  * Currently Java 8
-  * Follow the instructions. In particular, update the PATH environment variable. 
-     * Control Panel -> System -> Advanced -> Environment Variables
-     * Add the JDK path to the path environment variable
-4. Checkout the [Pathfinder project](https://github.com/JacisNonsense/Pathfinder)
-5. Build using `gradlew build`
-
-Now change to the Pathfinder-Tool directory and build as described above.
 
