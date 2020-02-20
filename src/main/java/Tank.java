@@ -157,10 +157,10 @@ public class Tank {
         Trajectory left = modifier.getLeftTrajectory();
         Trajectory right = modifier.getRightTrajectory();
 
-        File out = new File("left.csv");
+        File out = new File("./left.csv");
         Pathfinder.writeToCSV(out, left);
 
-        out = new File("right.csv");
+        out = new File("./right.csv");
         Pathfinder.writeToCSV(out, right);
 
         out = new File("trajectory.cpp");
