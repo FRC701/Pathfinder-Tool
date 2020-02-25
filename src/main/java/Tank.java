@@ -20,7 +20,7 @@ public class Tank {
     public static final double INCHES_PER_FOOT = 12.0;
     public static final double SECONDS_PER_MINUTE = 60.0;
     public static final double SAMPLE_INTERVAL_SECONDS = 0.01;
-    public static final double ROBOT_MAX_VELOCITY_FPS = 10.52;
+    public static final double ROBOT_MAX_VELOCITY_FPS = 16;
     public static final double MAX_VELOCITY_FPS = ROBOT_MAX_VELOCITY_FPS * 0.75; // 7.89 units must be consistant feet/second
     public static final double MAX_ACCELERATION_FPSPS = MAX_VELOCITY_FPS * 2.0; // 7.89 units must be consistent feet/second/second?
     public static final double MAX_JERK_FPSPSPS = 60.0;        // units must be consistent acceleration/second
@@ -34,8 +34,18 @@ public class Tank {
 //    public static final String NAMESPACE = "SwitchIntakeTrajectories";
 //    public static final String NAMESPACE = "SwitchIntakeReverseTrajectories";
 //    public static final String NAMESPACE = "PostRightSwitchTrajectories";
-    public static final String NAMESPACE = "LeftScaleTrajectories";
+//    public static final String NAMESPACE = "LeftScaleTrajectories";
 //    public static final String NAMESPACE = "RightScaleTrajectories";
+
+    // public static final String NAMESPACE = "RookieTrajectories";
+    // public static final boolean REVERSE = false;
+
+    //public static final String NAMESPACE = "PoachToShootTrajectories";
+    //public static final boolean REVERSE = true;
+
+    public static final String NAMESPACE = "PoachTrajectories";
+    public static final boolean REVERSE = false;
+    
 
 
     public static void main(String[] args) {
@@ -52,15 +62,9 @@ public class Tank {
         final double AUTO_LINE_DISTANCE_FEET = AUTO_LINE_DISTANCE_INCHES / INCHES_PER_FOOT;
         // Robot length = 35 1/2"
         final double BUMPER_THICKNESS_INCHES = 0.75 + 2.5;
-        final double ROBOT_LENGTH_FEET = (32.5 + (BUMPER_THICKNESS_INCHES * 2)) / INCHES_PER_FOOT;
+        final double ROBOT_LENGTH_FEET = (31.5 + (BUMPER_THICKNESS_INCHES * 2)) / INCHES_PER_FOOT;
         // Put the robot half way across the line.
         final double AUTO_RUN_DISTANCE_FEET = AUTO_LINE_DISTANCE_FEET - (ROBOT_LENGTH_FEET / 2.0);
-
-        Waypoint[] autoRunPoints = new Waypoint[] {
-                new Waypoint(0, 0, 0),
-                new Waypoint(AUTO_RUN_DISTANCE_FEET + 7.0, 0, 0)
-        };
-
 
 
         final double CENTER_LINE_FEET = 13.5;
@@ -80,42 +84,22 @@ public class Tank {
         final double LEFT_SCALE_DISTANCE_FUDGE_FEET = 3.5;
         final double LEFT_SCALE_DRIVE_DISTANCE_FEET = (300 / INCHES_PER_FOOT) - LEFT_SCALE_DISTANCE_FUDGE_FEET;
 
-        Waypoint[] rightSwitchPoints = new Waypoint[] {
-                new Waypoint(0, CENTER_START_FEET, 0),
-                new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET, RIGHT_SWITCH_FEET, 0)
+        Waypoint[] autoRunPoints = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(1.0, 0, 0)
         };
 
-        Waypoint[] leftSwitchPoints = new Waypoint[] {
-                new Waypoint(0, CENTER_START_FEET, 0),
-                new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET, 0)
+        Waypoint[] poach = new Waypoint[] {
+                new Waypoint(10, -25, 0),
+                new Waypoint(17.5, -25, 0)
         };
 
-        Waypoint[] postSwitchLeft = new Waypoint[] {
-          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET - 5.0, LEFT_SWITCH_FEET, 0 ),
-          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET + 2.5, 0),
-          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET + 7.0, LEFT_SWITCH_FEET + 2.0 + ROBOT_WIDTH_FEET + 2.5, 0)
+        Waypoint[] poachToShoot = new Waypoint[] {
+                new Waypoint(17.5, -25, 0)
+                , new Waypoint(13, -20, -Math.PI/3)
+                , new Waypoint(10, -8, -Math.PI/2)
         };
 
-        Waypoint[] postSwitchRight = new Waypoint[] {
-          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET - 5.0, RIGHT_SWITCH_FEET, 0 ),
-          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET, RIGHT_SWITCH_FEET - 1.0 - ROBOT_WIDTH_FEET - 2.0, 0),
-          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET + 7.0, RIGHT_SWITCH_FEET - 1.0 - ROBOT_WIDTH_FEET - 2.0, 0)
-        };
-
-        Waypoint[] leftSwitchReverse = new Waypoint[] {
-          new Waypoint(LEFT_SWITCH_DRIVE_DISTANCE_FEET - 0.5, LEFT_SWITCH_FEET, 0),
-          new Waypoint(0, CENTER_START_FEET, 0)
-        };
-
-        Waypoint[] rightSwitchReverse = new Waypoint[] {
-          new Waypoint(RIGHT_SWITCH_DRIVE_DISTANCE_FEET - 0.5, RIGHT_SWITCH_FEET, 0),
-          new Waypoint(0, CENTER_START_FEET, 0)
-        };
-
-        Waypoint[] switchIntake = new Waypoint[] {
-          new Waypoint(0, CENTER_START_FEET, 0),
-          new Waypoint(CUBE_PILE_DRIVE_DISTANCE_FEET, CENTER_START_FEET, 0)
-        };
 
 
         final double LEFT_SCALE_START_FEET = 27.0 - 2.5 - (ROBOT_WIDTH_FEET / 2.0);
@@ -139,17 +123,20 @@ public class Tank {
         // Waypoint[] points = leftSwitchPoints;
         // Waypoint[] points = postSwitchLeft;
         //Waypoint[] points = postSwitchRight;
-         Waypoint[] points = leftScalePoints;
+        // Waypoint[] points = leftScalePoints;
         //Waypoint[] points = rightScalePoints;
         // Waypoint[] points = leftSwitchReverse;
         //Waypoint[] points = rightSwitchReverse;
         //Waypoint[] points = switchIntake;
-        //Waypoint[] points = autoRunPoints;
+
+        // Waypoint[] points = autoRunPoints;
+        //Waypoint[] points = poachToShoot;
+        Waypoint[] points = poach;
 
         PrintWaypoints(points);
         Trajectory trajectory = Pathfinder.generate(points, config);
 
-        final double WHEEL_BASE_INCHES = 27.5;
+        final double WHEEL_BASE_INCHES = 26.0;
         final double WHEEL_BASE_FEET = WHEEL_BASE_INCHES / INCHES_PER_FOOT;
         TankModifier modifier = new TankModifier(trajectory).modify(WHEEL_BASE_FEET);
 
@@ -168,15 +155,18 @@ public class Tank {
         System.out.println("Done!");
     }
 
-    public static final double UNITS_PER_REVOLUTION = 4096.0;
-    public static final double WHEEL_DIAMETER_INCHES = 4.0;
+    public static final double UNITS_PER_REVOLUTION = 2048.0;
+    public static final double WHEEL_DIAMETER_INCHES = 6.0;
     public static final double WHEEL_DIAMETER_FEET = WHEEL_DIAMETER_INCHES / INCHES_PER_FOOT;  // 1/3
     public static final double FEET_PER_ROTATION_WHEEL =  Math.PI * WHEEL_DIAMETER_FEET;  // 1.04719
-    public static final double WHEEL_GEAR_TEETH = 36.0;
-    public static final double ENCODER_GEAR_TEETH = 26.0;
+    public static final double WHEEL_GEAR_TEETH = 84.0; 
+    public static final double ENCODER_GEAR_TEETH = 8.0;
     public static final double FEET_PER_ROTATION_ENCODER = FEET_PER_ROTATION_WHEEL * ENCODER_GEAR_TEETH / WHEEL_GEAR_TEETH; // 1.4500
     public static final double FPS_TO_RPM = FEET_PER_ROTATION_ENCODER * SECONDS_PER_MINUTE;  // 87.00
 
+
+    // 128942, 132442  10 feet
+    // 12894.2 13244.2 / foot
     /*
        ticks      rotation
       -------- * ----------
@@ -188,7 +178,7 @@ public class Tank {
 
     */
 
-    public static final double TICKS_PER_FOOT = UNITS_PER_REVOLUTION / FEET_PER_ROTATION_ENCODER; // 2824.8941
+    public static final double TICKS_PER_FOOT = 13000; // UNITS_PER_REVOLUTION / FEET_PER_ROTATION_ENCODER; // 2824.8941
     public static final double FPS_TO_UNITS_PER_100MS = TICKS_PER_FOOT / 10.0;  // 10.0 is 100ms / sec == 282.4894
 
     /*
@@ -219,10 +209,10 @@ public class Tank {
         // Change the linkage for const by specifing extern.
         out.printf("extern const unsigned int kTrajectoryLength = %d;\n\n", leftSegments.length);
         out.println("extern const robovikes::TrajectoryPoint leftTrajectories[] = {");
-        PrintSegments(out, leftSegments, positionScale, velocityScale );
+        PrintSegments(out, (REVERSE ? rightSegments : leftSegments), positionScale, velocityScale );
 
         out.println("extern const robovikes::TrajectoryPoint rightTrajectories[] = {");
-        PrintSegments(out, rightSegments, positionScale, velocityScale);
+        PrintSegments(out, (REVERSE ? leftSegments : rightSegments), positionScale, velocityScale);
         out.printf("\n} // namespace %s\n", NAMESPACE);
 
         out.flush();
@@ -244,9 +234,10 @@ public class Tank {
         } else {
           first = false;
         }
+        
         out.printf("  { %g, %g }",
-          segments[index].position * positionScale /* * -1.0 */,
-          segments[index].velocity * velocityScale /* * -1.0 */);
+          segments[index].position * positionScale * (REVERSE ? -1.0 : 1.0) , // remove -1 for forward
+          segments[index].velocity * velocityScale * (REVERSE ? -1.0 : 1.0) ); // remove -1 for forward
       }
       out.println("\n};");
     }
