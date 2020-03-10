@@ -21,8 +21,8 @@ public class Tank {
     public static final double SECONDS_PER_MINUTE = 60.0;
     public static final double SAMPLE_INTERVAL_SECONDS = 0.01;
     public static final double ROBOT_MAX_VELOCITY_FPS = 16;
-    public static final double MAX_VELOCITY_FPS = ROBOT_MAX_VELOCITY_FPS * 0.75; // 7.89 units must be consistant feet/second
-    public static final double MAX_ACCELERATION_FPSPS = MAX_VELOCITY_FPS * 2.0; // 7.89 units must be consistent feet/second/second?
+    public static final double MAX_VELOCITY_FPS = ROBOT_MAX_VELOCITY_FPS * 0.75; // 0.75; // 7.89 units must be consistant feet/second
+    public static final double MAX_ACCELERATION_FPSPS = MAX_VELOCITY_FPS * 3.0; // 7.89 units must be consistent feet/second/second?
     public static final double MAX_JERK_FPSPSPS = 60.0;        // units must be consistent acceleration/second
 //    public static final String NAMESPACE = "AutoRunTrajectories";
 //    public static final String NAMESPACE = "RightSwitchTrajectories";
@@ -40,12 +40,23 @@ public class Tank {
     // public static final String NAMESPACE = "RookieTrajectories";
     // public static final boolean REVERSE = false;
 
-    //public static final String NAMESPACE = "PoachToShootTrajectories";
+    //public static final String NAMESPACE = "Forward4Trajectories";
     //public static final boolean REVERSE = true;
 
-    public static final String NAMESPACE = "PoachTrajectories";
+    public static final String NAMESPACE = "TrenchTrajectories";
     public static final boolean REVERSE = false;
-    
+
+//     public static final String NAMESPACE = "TrenchReverseTrajectories";
+//     public static final boolean REVERSE = true;
+
+//     public static final String NAMESPACE = "PoachToShootTrajectories";
+//     public static final boolean REVERSE = true;
+
+//     public static final String NAMESPACE = "PoachTrajectories";
+//     public static final boolean REVERSE = false;
+
+//     public static final String NAMESPACE = "ShortShotTrajectories";
+//     public static final boolean REVERSE = false;
 
 
     public static void main(String[] args) {
@@ -86,52 +97,53 @@ public class Tank {
 
         Waypoint[] autoRunPoints = new Waypoint[] {
                 new Waypoint(0, 0, 0),
-                new Waypoint(1.0, 0, 0)
+                new Waypoint(4.0, 0, 0)
+        };
+
+        Waypoint[] shortShotPoints = new Waypoint[] {
+                new Waypoint(0, 0, 0),
+                new Waypoint(10.0 - ROBOT_LENGTH_FEET, 0, 0)
+        };
+
+        Waypoint[] trench = new Waypoint[] {
+                  new Waypoint(0,   0,     0)
+                , new Waypoint(86.63/INCHES_PER_FOOT, 39.16/INCHES_PER_FOOT,  Math.PI/4)
+                //, new Waypoint((194.63/INCHES_PER_FOOT)-ROBOT_LENGTH_FEET, 27.75/INCHES_PER_FOOT, 0)
+        };
+
+        Waypoint[] reverseTrench = new Waypoint[] {
+                  new Waypoint(10+6+(122.63/12)-ROBOT_LENGTH_FEET,   -27.75/12, 0)
+                , new Waypoint(17.5, -4.5,  Math.PI/4)
+                , new Waypoint(10,   -8,     0)
         };
 
         Waypoint[] poach = new Waypoint[] {
-                new Waypoint(10, -25, 0),
-                new Waypoint(17.5, -25, 0)
+                new Waypoint(10, -27 + 27.75/12, 0),
+                new Waypoint(10+(130.36/12)-ROBOT_LENGTH_FEET, -27 + 27.75/12, 0)
         };
+
+        final double POACH_TO_SHOOT_START = 10+(130.36/12)-ROBOT_LENGTH_FEET;
+        final double POACH_TO_SHOOT_STOP  = 10+(ROBOT_LENGTH_FEET/2);
+        final double POACH_TO_SHOOT_HALF  = (POACH_TO_SHOOT_START + POACH_TO_SHOOT_STOP)/2;
+        
+        final double POACH_TO_SHOOT_Y_START = -27 + (27.75/12);
+        final double POACH_TO_SHOOT_Y_STOP = -8-(ROBOT_LENGTH_FEET/2);
+        final double POACH_TO_SHOOT_Y_HALF = (POACH_TO_SHOOT_Y_START + POACH_TO_SHOOT_Y_STOP)/2;
 
         Waypoint[] poachToShoot = new Waypoint[] {
-                new Waypoint(17.5, -25, 0)
-                , new Waypoint(13, -20, -Math.PI/3)
-                , new Waypoint(10, -8, -Math.PI/2)
+                  new Waypoint(POACH_TO_SHOOT_START, POACH_TO_SHOOT_Y_START, 0)
+                , new Waypoint(POACH_TO_SHOOT_HALF - 1.5, -20, -Math.PI/3)
+                , new Waypoint(POACH_TO_SHOOT_STOP, POACH_TO_SHOOT_Y_STOP, -Math.PI/2)
         };
 
 
-
-        final double LEFT_SCALE_START_FEET = 27.0 - 2.5 - (ROBOT_WIDTH_FEET / 2.0);
-
-        Waypoint[] leftScalePoints = new Waypoint[] {
-          new Waypoint(0, LEFT_SCALE_START_FEET , 0),
-          new Waypoint((288.0 / INCHES_PER_FOOT)  /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
-                          LEFT_SCALE_START_FEET + 1.25, -Math.PI/9.0)
-
-        };
-
-        final double RIGHT_SCALE_START_FEET = 2.5 + (ROBOT_WIDTH_FEET / 2.0);
-
-        Waypoint[] rightScalePoints = new Waypoint[] {
-          new Waypoint(0, RIGHT_SCALE_START_FEET , 0),
-          new Waypoint((288.0 / INCHES_PER_FOOT) /*+ ((72.0 / 4.0)/INCHES_PER_FOOT)*/,
-                          RIGHT_SCALE_START_FEET - 1.25, Math.PI/9.0)
-
-        };
-        // Waypoint[] points = rightSwitchPoints;
-        // Waypoint[] points = leftSwitchPoints;
-        // Waypoint[] points = postSwitchLeft;
-        //Waypoint[] points = postSwitchRight;
-        // Waypoint[] points = leftScalePoints;
-        //Waypoint[] points = rightScalePoints;
-        // Waypoint[] points = leftSwitchReverse;
-        //Waypoint[] points = rightSwitchReverse;
-        //Waypoint[] points = switchIntake;
 
         // Waypoint[] points = autoRunPoints;
-        //Waypoint[] points = poachToShoot;
-        Waypoint[] points = poach;
+        Waypoint[] points = trench;
+//          Waypoint[] points = reverseTrench;
+//         Waypoint[] points = poachToShoot;
+//         Waypoint[] points = poach;
+//         Waypoint[] points = shortShotPoints;
 
         PrintWaypoints(points);
         Trajectory trajectory = Pathfinder.generate(points, config);
@@ -150,7 +162,7 @@ public class Tank {
         out = new File("./right.csv");
         Pathfinder.writeToCSV(out, right);
 
-        out = new File("trajectory.cpp");
+        out = new File(NAMESPACE + ".cpp");
         WriteToStruct(out, left, right);
         System.out.println("Done!");
     }
